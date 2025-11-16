@@ -37,7 +37,7 @@ public class SwaggerConfig {
                 .contact(new Contact()
                         .name("Weather Team")
                         .email("weather@example.com")
-                        .url("https://example.com"))
+                        .url("https://cotato-weather.o-r.kr"))
                 .license(new License()
                         .name("Apache 2.0")
                         .url("https://www.apache.org/licenses/LICENSE-2.0.html"));
@@ -49,7 +49,7 @@ public class SwaggerConfig {
                 .description("Local Development Server");
 
         Server prodServer = new Server()
-                .url("https://api.example.com")
+                .url("https://cotato-weather.o-r.kr")
                 .description("Production Server");
 
         return List.of(localServer, prodServer);
