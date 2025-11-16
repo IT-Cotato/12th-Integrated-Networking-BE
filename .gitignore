@@ -71,6 +71,7 @@ $RECYCLE.BIN/
 ### Application ###
 *.env
 .env
+docker-compose.yml
 
 ### Log Files ###
 logs/
