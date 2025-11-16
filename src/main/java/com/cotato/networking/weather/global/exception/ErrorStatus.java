@@ -13,8 +13,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorStatus implements BaseErrorCode {
 
-	// 예시
-	WEATHER_EXCEPTION(HttpStatus.BAD_REQUEST, "WEATHER401", "날씨 오류"),
+	// Place Error
+	PLACE_ALREADY_EXISTS(HttpStatus.CONFLICT, "P-001", "이미 등록된 장소입니다."),
 
 	// Common
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),
