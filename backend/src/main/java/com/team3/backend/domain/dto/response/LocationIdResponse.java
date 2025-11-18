@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CreateLocationResponse {
+public class LocationIdResponse {
 
     private Long locationId;
 }
