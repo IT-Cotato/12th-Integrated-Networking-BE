@@ -1,11 +1,9 @@
 package com.cotato.networking.weather.domain.place.entity;
 
+import com.cotato.networking.weather.domain.user.entity.User;
 import com.cotato.networking.weather.global.entity.BaseEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,5 +33,8 @@ public class Place extends BaseEntity {
 
 	private boolean isPinned = false;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 }
 
