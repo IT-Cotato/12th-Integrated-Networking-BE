@@ -28,4 +28,8 @@ public class Location extends BaseEntity{
     private Double longitude;
 
     private Boolean pinned;
+
+    public void updatePin(boolean pin) {
+        this.pinned = pin;
+    }
 }
