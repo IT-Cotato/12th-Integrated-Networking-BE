@@ -9,7 +9,7 @@ RUN chmod +x gradlew
 RUN ./gradlew bootJar --no-daemon
 
 # 애플리케이션 실행 단계
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-alpine
 
 ENV TZ=Asia/Seoul
 
