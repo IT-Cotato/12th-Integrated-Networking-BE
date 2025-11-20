@@ -16,10 +16,9 @@ public class WeatherController {
     private final WeatherService weatherService;
 
     @GetMapping("/current")
-    public WeatherResponse getWeather(@RequestParam double lat,
-                                      @RequestParam double lon) {
+    public WeatherResponse getWeather(@RequestParam Long locationId) {
 
-        return weatherService.getWeather(lat,lon);
+        return weatherService.getWeather(locationId);
     }
 
 }

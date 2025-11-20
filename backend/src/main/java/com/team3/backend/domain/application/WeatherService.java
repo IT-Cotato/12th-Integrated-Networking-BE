@@ -1,6 +1,8 @@
 package com.team3.backend.domain.application;
 
+import com.team3.backend.domain.dao.LocationRepository;
 import com.team3.backend.domain.dto.response.WeatherResponse;
+import com.team3.backend.domain.entity.Location;
 import com.team3.backend.domain.infra.AirQualityClient;
 import com.team3.backend.domain.infra.WeatherClient;
 import com.team3.backend.domain.infra.dto.AirQualityDto;
@@ -14,8 +16,15 @@ public class WeatherService {
 
     private final WeatherClient weatherClient;
     private final AirQualityClient airQualityClient;
+    private final LocationRepository locationRepository;
 
-    public WeatherResponse getWeather(double lat, double lon) {
+    public WeatherResponse getWeather(Long locationId) {
+
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new IllegalArgumentException("등록되지않은 위치 정보입니다."));
+
+        double lat = location.getLatitude();
+        double lon = location.getLongitude();
 
         OpenWeatherDto weather = weatherClient.getCurrentWeather(lat, lon);
 
