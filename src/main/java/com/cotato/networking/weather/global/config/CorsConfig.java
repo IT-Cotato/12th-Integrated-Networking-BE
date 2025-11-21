@@ -26,6 +26,7 @@ public class CorsConfig {
 		config.addAllowedOrigin(FRONT_URL);
 		config.addAllowedOrigin(FRONT_LOCALHOST_URL);
 		config.addAllowedOrigin(SERVER_LOCALHOST_URL);
+		config.addAllowedOriginPattern("*");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		config.setExposedHeaders(List.of(
