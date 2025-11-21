@@ -23,12 +23,19 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle (test + bootJar)
+      #테스트는 test 프로필(H2)로 실행
+      - name: Run tests with test profile
+        env:
+          SPRING_PROFILES_ACTIVE: test
         run: |
           ./gradlew clean test
+
+      #빌드는 기본 설정으로 bootJar만 생성
+      - name: Build bootJar
+        run: |
           ./gradlew bootJar
 
-      # cd영역
+      # ====== CD 영역 (develop 브랜치에 push 될 때만 실행) ======
       - name: Log in to Docker Hub
         if: github.ref == 'refs/heads/develop'
         uses: docker/login-action@v3
