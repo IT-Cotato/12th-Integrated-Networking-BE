@@ -3,7 +3,6 @@ package com.team3.backend.api;
 import com.team3.backend.domain.application.HourlyWeatherService;
 import com.team3.backend.domain.application.WeatherService;
 import com.team3.backend.domain.dto.response.ApiResponse;
-import com.team3.backend.domain.dto.response.HourlyWeatherListResponse;
 import com.team3.backend.domain.dto.response.HourlyWeatherResponse;
 import com.team3.backend.domain.dto.response.WeatherResponse;
 import lombok.RequiredArgsConstructor;

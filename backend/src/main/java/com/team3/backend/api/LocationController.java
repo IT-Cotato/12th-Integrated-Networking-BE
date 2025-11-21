@@ -26,7 +26,9 @@ public class LocationController {
             @RequestBody @Valid CreateLocationRequest req,
             HttpSession session) {
 
-        User user = (User) session.getAttribute("LOGIN_USER");
+        //User user = (User) session.getAttribute("LOGIN_USER");
+        //임시
+        User user = new User(1L, "test@test.com,","hello");
         LocationIdResponse result = locationService.createLocation(req, user);
 
         return ApiResponse.<LocationIdResponse>builder()
@@ -40,7 +42,9 @@ public class LocationController {
     @GetMapping("/location")
     public ApiResponse<List<LocationListResponse>> getLocationList(HttpSession session) {
 
-        User user = (User) session.getAttribute("LOGIN_USER");
+        //User user = (User) session.getAttribute("LOGIN_USER");
+        //임시
+        User user = new User(1L, "test@test.com,","hello");
         List<LocationListResponse> result = locationService.getLocationList(user);
 
         return ApiResponse.<List<LocationListResponse>>builder()
@@ -57,7 +61,9 @@ public class LocationController {
             @RequestBody @Valid PinRequest req,
             HttpSession session) {
 
-        User user = (User) session.getAttribute("LOGIN_USER");
+        //User user = (User) session.getAttribute("LOGIN_USER");
+        //임시
+        User user = new User(1L, "test@test.com,","hello");
         LocationIdResponse result = locationService.updatePin(req, user, locationId);
 
         return ApiResponse.<LocationIdResponse>builder()
@@ -73,7 +79,9 @@ public class LocationController {
             @PathVariable("id") Long locationId,
             HttpSession session) {
 
-        User user = (User) session.getAttribute("LOGIN_USER");
+        //User user = (User) session.getAttribute("LOGIN_USER");
+        //임시
+        User user = new User(1L, "test@test.com,","hello");
         LocationIdResponse result = locationService.deleteLocation(user, locationId);
 
         return ApiResponse.<LocationIdResponse>builder()
