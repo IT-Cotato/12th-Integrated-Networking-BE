@@ -2,9 +2,11 @@ package com.team3.backend.api;
 
 import com.team3.backend.domain.application.HourlyWeatherService;
 import com.team3.backend.domain.application.WeatherService;
+import com.team3.backend.domain.application.WeeklyWeatherService;
 import com.team3.backend.domain.dto.response.ApiResponse;
 import com.team3.backend.domain.dto.response.HourlyWeatherResponse;
 import com.team3.backend.domain.dto.response.WeatherResponse;
+import com.team3.backend.domain.dto.response.WeeklyWeatherResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ public class WeatherController {
 
     private final WeatherService weatherService;
     private final HourlyWeatherService hourlyWeatherService;
+    private final WeeklyWeatherService weeklyWeatherService;
 
     @GetMapping("/current")
     public ApiResponse<WeatherResponse> getWeather(@RequestParam Long locationId) {
@@ -40,6 +43,19 @@ public class WeatherController {
         List<HourlyWeatherResponse> list = hourlyWeatherService.getHourlyWeather(locationId);
 
         return ApiResponse.<List<HourlyWeatherResponse>>builder()
+                .code("REQUEST_OK")
+                .message("request succeeded")
+                .success(true)
+                .results(list)
+                .build();
+    }
+
+    @GetMapping("/weekly")
+    public ApiResponse<List<WeeklyWeatherResponse>> getWeeklyWeather(@RequestParam Long locationId) {
+
+        List<WeeklyWeatherResponse> list = weeklyWeatherService.getWeeklyWeather(locationId);
+
+        return ApiResponse.<List<WeeklyWeatherResponse>>builder()
                 .code("REQUEST_OK")
                 .message("request succeeded")
                 .success(true)

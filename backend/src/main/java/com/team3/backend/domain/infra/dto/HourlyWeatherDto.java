@@ -22,6 +22,7 @@ public class HourlyWeatherDto {
     @Data
     public static class Main {
         private double temp;
+        private int humidity;
     }
 
     @Data
