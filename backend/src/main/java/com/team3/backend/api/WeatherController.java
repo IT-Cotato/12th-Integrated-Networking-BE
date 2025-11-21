@@ -2,6 +2,7 @@ package com.team3.backend.api;
 
 import com.team3.backend.domain.application.HourlyWeatherService;
 import com.team3.backend.domain.application.WeatherService;
+import com.team3.backend.domain.dto.response.ApiResponse;
 import com.team3.backend.domain.dto.response.HourlyWeatherListResponse;
 import com.team3.backend.domain.dto.response.HourlyWeatherResponse;
 import com.team3.backend.domain.dto.response.WeatherResponse;
@@ -22,17 +23,24 @@ public class WeatherController {
     private final HourlyWeatherService hourlyWeatherService;
 
     @GetMapping("/current")
-    public WeatherResponse getWeather(@RequestParam Long locationId) {
+    public ApiResponse<WeatherResponse> getWeather(@RequestParam Long locationId) {
 
-        return weatherService.getWeather(locationId);
+        WeatherResponse response = weatherService.getWeather(locationId);
+
+        return ApiResponse.<WeatherResponse>builder()
+                .code("REQUEST_OK")
+                .message("request succeeded")
+                .success(true)
+                .results(response)
+                .build();
     }
 
     @GetMapping("/hourly")
-    public HourlyWeatherListResponse getHourlyWeather(@RequestParam Long locationId) {
+    public ApiResponse<List<HourlyWeatherResponse>> getHourlyWeather(@RequestParam Long locationId) {
 
         List<HourlyWeatherResponse> list = hourlyWeatherService.getHourlyWeather(locationId);
 
-        return HourlyWeatherListResponse.builder()
+        return ApiResponse.<List<HourlyWeatherResponse>>builder()
                 .code("REQUEST_OK")
                 .message("request succeeded")
                 .success(true)
