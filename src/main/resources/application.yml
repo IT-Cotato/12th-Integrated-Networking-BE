@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://host.docker.internal:3306/mydb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: whgudwns100!
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/mydb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
+    username: ${SPRING_DATASOURCE_USERNAME:mydb}
+    password: ${SPRING_DATASOURCE_PASSWORD:change-me}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
