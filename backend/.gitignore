@@ -26,3 +26,4 @@ logs/
 # application.properties
 # application.yml
 application-secrets.properties
+application-secrets.yml
