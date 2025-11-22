@@ -6,28 +6,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;
 
+
+import lombok.Getter;
+
 @Getter
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DataResponse<T> extends BaseResponse {
 
 	private final T data;
 
-	private DataResponse(HttpStatus status, T data) {
-		super(status);
+	private DataResponse(String code, String message, T data) {
+		super(code, message);
 		this.data = data;
 	}
 
-	public static <T> DataResponse<T> from(T data) {
-		return new DataResponse<>(HttpStatus.OK, data);
+	public static <T> DataResponse<T> of(T data) {
+		return new DataResponse<>("SUCCESS", "성공", data);
 	}
-
-	public static <T> DataResponse<Void> ok() {
-		return new DataResponse<>(HttpStatus.OK, null);
-	}
-
-	public static <T> DataResponse<T> created(T data) {
-		return new DataResponse<>(HttpStatus.CREATED, data);
-	}
-
-	// 다른 응답 필요하면 추가
 }
