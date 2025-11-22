@@ -11,7 +11,9 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
     generate-ddl: true
-
+  config:
+    import: optional:file:.env.properties
   profiles:
     active: dev
     include: oauth
+
