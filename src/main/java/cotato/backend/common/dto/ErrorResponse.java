@@ -5,30 +5,24 @@ import org.springframework.http.HttpStatus;
 import cotato.backend.common.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
-
 @Getter
-public class ErrorResponse extends BaseResponse {
+public class ErrorResponse {
 
 	private final String code;
 	private final String message;
-	private final String method;
-	private final String requestURI;
+	private final int status;
 
-	private ErrorResponse(String code, String message, String method, String requestURI, HttpStatus httpStatus) {
-		super(httpStatus);
+	private ErrorResponse(String code, String message, int status) {
 		this.code = code;
 		this.message = message;
-		this.method = method;
-		this.requestURI = requestURI;
+		this.status = status;
 	}
 
-	public static ErrorResponse of(ErrorCode errorCode, HttpServletRequest request) {
+	public static ErrorResponse of(ErrorCode errorCode) {
 		return new ErrorResponse(
-			errorCode.getCode(),
-			errorCode.getMessage(),
-			request.getMethod(),
-			request.getRequestURI(),
-			errorCode.getHttpStatus()
+				errorCode.getCode(),
+				errorCode.getMessage(),
+				errorCode.getHttpStatus().value()
 		);
 	}
 }

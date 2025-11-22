@@ -1,0 +1,26 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: ${DB_DRIVER_CLASS_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+kakao:
+  oauth:
+    client-id: ${KAKAO_REST_API_KEY}
+    client-secret: ${KAKAO_CLIENT_SECRET}
+    redirect-uri: ${LOCAL_KAKAO_REDIRECT_URI}
+    token-uri: ${KAKAO_TOKEN_URI}
+    user-info-uri: ${KAKAO_USER_INFO_URI}
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-validity-in-seconds: 3600 #1시간
+  refresh-token-validity-in-seconds: 1209600 #14일
+
+logging:
+  level:
+    cotato.backend: DEBUG
+    feign: DEBUG
