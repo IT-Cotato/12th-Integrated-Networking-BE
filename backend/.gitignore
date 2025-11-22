@@ -25,3 +25,4 @@ logs/
 # Configuration files (if they contain sensitive info like passwords)
 # application.properties
 # application.yml
+application-secrets.properties
