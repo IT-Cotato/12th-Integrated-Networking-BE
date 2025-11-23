@@ -1,4 +1,4 @@
-package com.team3.backend.auth;
+package com.team3.backend.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

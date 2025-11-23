@@ -1,5 +1,6 @@
-package com.team3.backend.auth;
+package com.team3.backend.config;
 
+import com.team3.backend.domain.dto.response.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
