@@ -1,0 +1,18 @@
+# IDE Files (IntelliJ, etc.)
+.idea/
+*.iml
+
+# Operating System Files (macOS)
+.DS_Store
+*/.DS_Store
+
+# Gradle generated files
+.gradle/
+build/
+# If there is a "target" or "dist" directory, add it too
+/target/
+/dist/
+
+# Configuration files (often ignored for security)
+# application.properties
+# application.yml
