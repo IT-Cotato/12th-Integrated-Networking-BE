@@ -26,7 +26,11 @@ public enum ErrorStatus implements BaseErrorCode {
 	// User & Auth
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "해당 사용자를 찾을 수 없습니다."),
 	USER_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "USER401", "비밀번호가 일치하지 않습니다."),
-	USER_EXISTS(HttpStatus.CONFLICT, "USER409", "이미 존재하는 사용자입니다.");
+	USER_EXISTS(HttpStatus.CONFLICT, "USER409", "이미 존재하는 사용자입니다."),
+
+	// Weather
+	EXTERNAL_API_NO_RESPONSE(HttpStatus.BAD_GATEWAY, "API502", "외부 API 응답이 없습니다.");
+
 
 	private final HttpStatus httpStatus;
 	private final String code;
