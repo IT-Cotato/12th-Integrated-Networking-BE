@@ -9,7 +9,7 @@ services:
       - cotato-net
 
   backend:
-    image: neibler/cotato-backend:0.1.0
+    image: neibler/cotato-backend:latest
     container_name: cotato-backend
     restart: always
     env_file:
