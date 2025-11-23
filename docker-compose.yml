@@ -1,21 +1,12 @@
 services:
-  db:
-    image: mysql:8.0
-    container_name: mysql
-    restart: always
-    env_file:
-      - ./env/db.env
-    networks:
-      - cotato-net
-
   backend:
     image: neibler/cotato-backend:latest
     container_name: cotato-backend
     restart: always
     env_file:
-      - ./env/backend.env
-    depends_on:
-      - db
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
     ports:
       - "8080:8080"
     networks:
