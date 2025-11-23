@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/mydb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
     username: ${SPRING_DATASOURCE_USERNAME:mydb}
@@ -18,3 +20,10 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql: trace
+
+weather:
+  api-key: d364b0258b887a52cfd560c72aef20ac
+  forecast-url: https://api.openweathermap.org/data/2.5/forecast
+  current-url: https://api.openweathermap.org/data/2.5/weather
+  air-url: https://api.openweathermap.org/data/2.5/air_pollution
+  oneCall-Url: https://api.openweathermap.org/data/3.0/onecall
