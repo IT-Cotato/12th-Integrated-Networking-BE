@@ -2,9 +2,9 @@ name: Backend CI/CD
 
 on:
   push:
-    branches: [ feature/deploy ]
+    branches: [ feature/deploy ]   # feature/deploy 브랜치에 push 될 때
   pull_request:
-    branches: [ develop ]
+    branches: [ develop ]          # develop 으로 PR 보낼 때 (테스트만)
 
 jobs:
   build-test-deploy:
@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 4) Docker 이미지 빌드 + latest 태그로 푸시
+      # 4) Docker 이미지 빌드 + latest / sha 태그로 푸시
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -50,9 +50,12 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_REPOSITORY }}:latest
+            ${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
 
-      # 5) GCP VM에 SSH로 접속해서 docker compose pull/up 실행
+      # 5) GCP VM에 SSH로 접속해서 git pull + docker compose pull/up 실행
+      #    → PR 에서는 배포하지 않도록 push + feature/deploy 조건을 명시
       - name: Deploy to GCP VM
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/deploy'
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.GCP_VM_HOST }}
@@ -61,7 +64,7 @@ jobs:
           script: |
             cd ~/12th-Integrated-Networking-BE
             git fetch origin
-            git checkout feature/deploy
+            git checkout feature/deploy || git checkout -b feature/deploy origin/feature/deploy
             git pull origin feature/deploy
             docker compose pull
             docker compose up -d
