@@ -67,4 +67,4 @@ jobs:
             git checkout develop || git checkout -b develop origin/develop
             git pull origin develop
             docker compose pull
-            docker compose up -d
+            SPRING_PROFILES_ACTIVE=dev docker compose up -d
