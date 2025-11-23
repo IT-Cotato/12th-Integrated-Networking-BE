@@ -23,28 +23,28 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      #테스트는 test 프로필(H2)로 실행
+      # 테스트는 test 프로필(H2)로 실행
       - name: Run tests with test profile
         env:
           SPRING_PROFILES_ACTIVE: test
         run: |
           ./gradlew clean test
 
-      #빌드는 기본 설정으로 bootJar만 생성
+      # 빌드는 기본 설정으로 bootJar만 생성
       - name: Build bootJar
         run: |
           ./gradlew bootJar
 
-      # ====== CD 영역 (develop 브랜치에 push 될 때만 실행) ======
+      # ====== Docker 이미지 빌드 & 푸시 (feature/deploy 에 push될 때만) ======
       - name: Log in to Docker Hub
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/feature/deploy'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/feature/deploy'
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -52,3 +52,19 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_REPOSITORY }}:latest
             ${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
+
+      # ====== GCP VM 자동 배포 (feature/deploy 에 push될 때만) ======
+      - name: Deploy to GCP VM
+        if: github.ref == 'refs/heads/feature/deploy'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/12th-Integrated-Networking-BE
+            git checkout feature/deploy || git checkout -b feature/deploy
+            git pull origin feature/deploy
+
+            docker compose pull
+            docker compose up -d
