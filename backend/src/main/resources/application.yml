@@ -1,0 +1,24 @@
+spring:
+  config:
+    import: optional:application-secrets.yml
+  # 1. 데이터소스(DB) 연결 설정
+  datasource:
+    url: jdbc:mysql://localhost:3306/Backend_team3?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: Backend_team3
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # 2. JPA/Hibernate 설정
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  springdoc:
+    swagger-ui:
+      path: /swagger-ui.html
+      disable-swagger-default-url: true
+    api-docs:
+      path: /v3/api-docs
