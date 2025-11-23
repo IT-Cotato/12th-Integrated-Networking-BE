@@ -43,8 +43,11 @@ public class WeatherController {
                 .build();
     }
 
+    @Operation(summary = "시간별 날씨 조회", description = "특정 장소의 시간별 날씨 예보 목록을 반환합니다.")
     @GetMapping("/hourly")
-    public ApiResponse<List<HourlyWeatherResponse>> getHourlyWeather(@RequestParam Long locationId) {
+    public ApiResponse<List<HourlyWeatherResponse>> getHourlyWeather(
+            @Parameter(description = "날씨 정보를 조회할 장소의 ID", example = "1")
+            @RequestParam Long locationId) {
 
         List<HourlyWeatherResponse> list = hourlyWeatherService.getHourlyWeather(locationId);
 
@@ -56,8 +59,11 @@ public class WeatherController {
                 .build();
     }
 
+    @Operation(summary = "주간별 날씨 조회", description = "특정 장소의 주간 날씨 예보 목록을 반환합니다.")
     @GetMapping("/weekly")
-    public ApiResponse<List<WeeklyWeatherResponse>> getWeeklyWeather(@RequestParam Long locationId) {
+    public ApiResponse<List<WeeklyWeatherResponse>> getWeeklyWeather(
+            @Parameter(description = "날씨 정보를 조회할 장소의 ID", example = "3")
+            @RequestParam Long locationId) {
 
         List<WeeklyWeatherResponse> list = weeklyWeatherService.getWeeklyWeather(locationId);
 

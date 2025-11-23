@@ -1,6 +1,7 @@
 package com.team3.backend.api;
 
 import com.team3.backend.domain.application.LocationService;
+import com.team3.backend.domain.dao.UserRepository;
 import com.team3.backend.domain.dto.request.CreateLocationRequest;
 import com.team3.backend.domain.dto.request.PinRequest;
 import com.team3.backend.domain.dto.response.ApiResponse;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +25,18 @@ import java.util.List;
 public class LocationController {
 
     private final LocationService locationService;
+    private final UserRepository userRepository;
+
+    // 테스트 유저를 DB에서 조회 (임시)
+    private User getTestUserFromDb() {
+        // 초기화 시 등록한 이메일로 DB에서 유저를 조회합니다.
+        Optional<User> userOptional = userRepository.findByEmail("test@test.com");
+
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("Test user 'test@test.com' not found. Please check UserInitializer.");
+        }
+        return userOptional.get();
+    }
 
     @Operation(summary = "장소 생성", description = "사용자가 새로운 장소를 등록합니다.")
     @PostMapping("/location")
@@ -30,9 +44,7 @@ public class LocationController {
             @RequestBody @Valid CreateLocationRequest req,
             HttpSession session) {
 
-        //User user = (User) session.getAttribute("LOGIN_USER");
-        //임시
-        User user = new User(1L, "test@test.com,","hello");
+        User user = getTestUserFromDb();
         LocationIdResponse result = locationService.createLocation(req, user);
 
         return ApiResponse.<LocationIdResponse>builder()
@@ -47,9 +59,7 @@ public class LocationController {
     @GetMapping("/location")
     public ApiResponse<List<LocationListResponse>> getLocationList(HttpSession session) {
 
-        //User user = (User) session.getAttribute("LOGIN_USER");
-        //임시
-        User user = new User(1L, "test@test.com,","hello");
+        User user = getTestUserFromDb();
         List<LocationListResponse> result = locationService.getLocationList(user);
 
         return ApiResponse.<List<LocationListResponse>>builder()
@@ -67,9 +77,8 @@ public class LocationController {
             @RequestBody @Valid PinRequest req,
             HttpSession session) {
 
-        //User user = (User) session.getAttribute("LOGIN_USER");
-        //임시
-        User user = new User(1L, "test@test.com,","hello");
+        User user = getTestUserFromDb();
+
         LocationIdResponse result = locationService.updatePin(req, user, locationId);
 
         return ApiResponse.<LocationIdResponse>builder()
@@ -86,11 +95,10 @@ public class LocationController {
             @PathVariable("id") Long locationId,
             HttpSession session) {
 
-        //User user = (User) session.getAttribute("LOGIN_USER");
-        //임시
-        User user = new User(1L, "test@test.com,","hello");
-        LocationIdResponse result = locationService.deleteLocation(user, locationId);
 
+        User user = getTestUserFromDb();
+
+        LocationIdResponse result = locationService.deleteLocation(user, locationId);
         return ApiResponse.<LocationIdResponse>builder()
                 .code("REQUEST_OK")
                 .message("request succeeded")
