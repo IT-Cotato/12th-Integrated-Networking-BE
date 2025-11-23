@@ -1,13 +1,13 @@
 name: Backend CI/CD
 
 on:
+  push:
+    branches: [ feature/deploy ]
   pull_request:
     branches: [ develop ]
-  push:
-    branches: [ develop, feature/deploy ]
 
 jobs:
-  build-and-test:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,47 +23,45 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # test 프로필(H2)로 테스트
+      # 1) 테스트는 test 프로필(H2)로 실행
       - name: Run tests with test profile
         env:
           SPRING_PROFILES_ACTIVE: test
         run: |
           ./gradlew clean test
 
-      # bootJar 빌드
+      # 2) bootJar 빌드
       - name: Build bootJar
-        run: ./gradlew bootJar
+        run: |
+          ./gradlew bootJar
 
-      # ===== Docker Hub로 이미지 push (develop 브랜치에서만) =====
+      # 3) Docker Hub 로그인
       - name: Log in to Docker Hub
-        if: github.ref == 'refs/heads/develop'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # 4) Docker 이미지 빌드 + latest 태그로 푸시
       - name: Build and push Docker image
-        if: github.ref == 'refs/heads/develop'
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_REPOSITORY }}:latest
-            ${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
 
-      # ===== GCP VM으로 자동 배포 (develop 브랜치에서만) =====
+      # 5) GCP VM에 SSH로 접속해서 docker compose pull/up 실행
       - name: Deploy to GCP VM
-        if: github.ref == 'refs/heads/develop'
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.1.0
         with:
-          host: ${{ secrets.GCP_VM_HOST }}          # 예: 34.50.xx.xx
-          username: ${{ secrets.SSH_USER }}         # 예: chj78954
-          key: ${{ secrets.GCP_VM_SSH_KEY }}        # private key 전체
-          port: 22
+          host: ${{ secrets.GCP_VM_HOST }}
+          username: ${{ secrets.GCP_VM_USER }}
+          key: ${{ secrets.GCP_VM_SSH_KEY }}
           script: |
             cd ~/12th-Integrated-Networking-BE
-            git checkout feature/deploy || git checkout -b feature/deploy origin/feature/deploy
+            git fetch origin
+            git checkout feature/deploy
             git pull origin feature/deploy
             docker compose pull
             docker compose up -d
