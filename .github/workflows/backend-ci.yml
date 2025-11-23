@@ -2,9 +2,9 @@ name: Backend CI/CD
 
 on:
   push:
-    branches: [ feature/deploy ]   # feature/deploy 브랜치에 push 될 때
+    branches: [ develop ]   # develop 브랜치에 push 될 때 자동 실행
   pull_request:
-    branches: [ develop ]          # develop 으로 PR 보낼 때 (테스트만)
+    branches: [ develop ]   # develop 으로 PR 보낼 때 (테스트만)
 
 jobs:
   build-test-deploy:
@@ -53,9 +53,9 @@ jobs:
             ${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
 
       # 5) GCP VM에 SSH로 접속해서 git pull + docker compose pull/up 실행
-      #    → PR 에서는 배포하지 않도록 push + feature/deploy 조건을 명시
+      #    → PR 에서는 배포하지 않도록 push + develop 조건을 명시
       - name: Deploy to GCP VM
-        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/deploy'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.GCP_VM_HOST }}
@@ -64,7 +64,7 @@ jobs:
           script: |
             cd ~/12th-Integrated-Networking-BE
             git fetch origin
-            git checkout feature/deploy || git checkout -b feature/deploy origin/feature/deploy
-            git pull origin feature/deploy
+            git checkout develop || git checkout -b develop origin/develop
+            git pull origin develop
             docker compose pull
             docker compose up -d

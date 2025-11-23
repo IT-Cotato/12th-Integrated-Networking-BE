@@ -8,6 +8,6 @@ public class PingController {
 
     @GetMapping("/ping")
     public String ping() {
-        return "OK from CI/CD5";
+        return "OK from CI/CD";
     }
 }
