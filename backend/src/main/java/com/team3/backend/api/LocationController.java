@@ -3,6 +3,7 @@ package com.team3.backend.api;
 import com.team3.backend.domain.application.LocationService;
 import com.team3.backend.domain.dto.request.CreateLocationRequest;
 import com.team3.backend.domain.dto.request.PinRequest;
+import com.team3.backend.domain.dto.response.ApiResponse;
 import com.team3.backend.domain.dto.response.LocationIdResponse;
 import com.team3.backend.domain.dto.response.LocationListResponse;
 import com.team3.backend.domain.entity.User;
@@ -21,36 +22,73 @@ public class LocationController {
     private final LocationService locationService;
 
     @PostMapping("/location")
-    public LocationIdResponse createLocation(@RequestBody @Valid CreateLocationRequest req,
-                                             HttpSession session) {
+    public ApiResponse<LocationIdResponse> createLocation(
+            @RequestBody @Valid CreateLocationRequest req,
+            HttpSession session) {
 
-        User user = (User) session.getAttribute("LOGIN_USER");
+        //User user = (User) session.getAttribute("LOGIN_USER");
+        //임시
+        User user = new User(1L, "test@test.com,","hello");
+        LocationIdResponse result = locationService.createLocation(req, user);
 
-        return locationService.createLocation(req,user);
+        return ApiResponse.<LocationIdResponse>builder()
+                .code("REQUEST_OK")
+                .message("request succeeded")
+                .success(true)
+                .results(result)
+                .build();
     }
 
     @GetMapping("/location")
-    public List<LocationListResponse> getLocationList(HttpSession session) {
+    public ApiResponse<List<LocationListResponse>> getLocationList(HttpSession session) {
 
-        User user = (User) session.getAttribute("LOGIN_USER");
-        return locationService.getLocationList(user);
+        //User user = (User) session.getAttribute("LOGIN_USER");
+        //임시
+        User user = new User(1L, "test@test.com,","hello");
+        List<LocationListResponse> result = locationService.getLocationList(user);
+
+        return ApiResponse.<List<LocationListResponse>>builder()
+                .code("REQUEST_OK")
+                .message("request succeeded")
+                .success(true)
+                .results(result)
+                .build();
     }
 
     @PatchMapping("/location/{id}/pin")
-    public LocationIdResponse updatePin(@PathVariable("id") Long locationId, @RequestBody @Valid PinRequest req,
-                          HttpSession session) {
+    public ApiResponse<LocationIdResponse> updatePin(
+            @PathVariable("id") Long locationId,
+            @RequestBody @Valid PinRequest req,
+            HttpSession session) {
 
-        User user = (User) session.getAttribute("LOGIN_USER");
+        //User user = (User) session.getAttribute("LOGIN_USER");
+        //임시
+        User user = new User(1L, "test@test.com,","hello");
+        LocationIdResponse result = locationService.updatePin(req, user, locationId);
 
-        return locationService.updatePin(req, user, locationId);
+        return ApiResponse.<LocationIdResponse>builder()
+                .code("REQUEST_OK")
+                .message("request succeeded")
+                .success(true)
+                .results(result)
+                .build();
     }
 
     @DeleteMapping("/location/{id}")
-    public LocationIdResponse deleteLocation(@PathVariable("id") Long locationId, HttpSession session) {
+    public ApiResponse<LocationIdResponse> deleteLocation(
+            @PathVariable("id") Long locationId,
+            HttpSession session) {
 
-        User user = (User) session.getAttribute("LOGIN_USER");
+        //User user = (User) session.getAttribute("LOGIN_USER");
+        //임시
+        User user = new User(1L, "test@test.com,","hello");
+        LocationIdResponse result = locationService.deleteLocation(user, locationId);
 
-        return locationService.deleteLocation(user, locationId);
+        return ApiResponse.<LocationIdResponse>builder()
+                .code("REQUEST_OK")
+                .message("request succeeded")
+                .success(true)
+                .results(result)
+                .build();
     }
-
 }
