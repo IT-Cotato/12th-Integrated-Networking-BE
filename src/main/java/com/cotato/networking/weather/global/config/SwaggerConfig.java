@@ -47,7 +47,6 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("COTATO Networking API")
                         .description("코테이토 통합 네트워킹 API 서버")
-                        .version("1.0.0"))
-                .servers(List.of(localServer));
+                        .version("1.0.0"));
     }
 }
