@@ -4,6 +4,8 @@ import cotato.backend.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -36,9 +38,11 @@ public class Place {
     private Boolean isPinned;
 
     @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "modified_at", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
     public Place(Member member, String placeName, Double latitude, Double longitude, String address, Boolean isPinned) {
@@ -48,7 +52,5 @@ public class Place {
         this.longitude = longitude;
         this.address = address;
         this.isPinned = isPinned;
-        this.createdAt = LocalDateTime.now();
-        this.modifiedAt = LocalDateTime.now();
     }
 }

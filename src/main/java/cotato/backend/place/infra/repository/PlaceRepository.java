@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
     List<Place> findAllByMember(Member member);
+    boolean existsByMemberIdAndPlaceName(Long memberId, String placeName);
 }
