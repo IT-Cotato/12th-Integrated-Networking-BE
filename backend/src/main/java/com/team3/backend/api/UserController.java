@@ -7,6 +7,8 @@ import com.team3.backend.domain.dto.request.SignUpRequest;
 import com.team3.backend.domain.dto.response.ErrorResponse;
 import com.team3.backend.domain.dto.response.UserResponse;
 import com.team3.backend.domain.entity.User;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
+@Tag(name = "User API", description = "유저 회원가입 로그인 로그아웃")
 public class UserController {
 
     public static final String LOGIN_USER = "LOGIN_USER";
@@ -31,6 +34,7 @@ public class UserController {
     private final UserRepository userRepository;
 
     // 회원가입
+    @Operation(summary = "회원가입", description = "신규 유저 회원가입")
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp
     (@RequestBody @Valid SignUpRequest req
@@ -41,6 +45,7 @@ public class UserController {
     }
 
     // 로그인
+    @Operation(summary = "로그인", description = "로그인")
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody @Valid LoginRequest req,
@@ -72,6 +77,7 @@ public class UserController {
     }
 
     // 로그아웃
+    @Operation(summary = "로그아웃", description = "로그아웃")
     @PostMapping("/logout")
     public void logout(HttpSession session) {
         session.invalidate();
