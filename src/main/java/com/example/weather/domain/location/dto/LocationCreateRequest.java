@@ -1,4 +1,4 @@
-package com.example.weather.dto.location;
+package com.example.weather.domain.location.dto;
 
 public class LocationCreateRequest {
 

@@ -1,11 +1,11 @@
-package com.example.weather.service;
+package com.example.weather.domain.location.service;
 
-import com.example.weather.domain.Location;
-import com.example.weather.domain.User;
-import com.example.weather.dto.location.LocationCreateRequest;
-import com.example.weather.dto.location.LocationResponse;
-import com.example.weather.repository.LocationRepository;
-import com.example.weather.repository.UserRepository;
+import com.example.weather.domain.location.entity.Location;
+import com.example.weather.domain.user.entity.User;
+import com.example.weather.domain.location.dto.LocationCreateRequest;
+import com.example.weather.domain.location.dto.LocationResponse;
+import com.example.weather.domain.location.repository.LocationRepository;
+import com.example.weather.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,5 +1,6 @@
-package com.example.weather.domain;
+package com.example.weather.domain.location.entity;
 
+import com.example.weather.domain.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

@@ -1,8 +1,8 @@
-package com.example.weather.controller;
+package com.example.weather.domain.location.controller;
 
-import com.example.weather.dto.location.LocationCreateRequest;
-import com.example.weather.dto.location.LocationResponse;
-import com.example.weather.service.LocationService;
+import com.example.weather.domain.location.dto.LocationCreateRequest;
+import com.example.weather.domain.location.dto.LocationResponse;
+import com.example.weather.domain.location.service.LocationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,6 @@
-package com.example.weather.repository;
+package com.example.weather.domain.user.repository;
 
-import com.example.weather.domain.User;
+import com.example.weather.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
