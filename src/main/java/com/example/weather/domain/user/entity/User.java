@@ -1,9 +1,12 @@
 package com.example.weather.domain.user.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @Table(name = "users")
 public class User {
 

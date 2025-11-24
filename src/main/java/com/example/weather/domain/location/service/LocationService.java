@@ -6,6 +6,8 @@ import com.example.weather.domain.location.dto.LocationCreateRequest;
 import com.example.weather.domain.location.dto.LocationResponse;
 import com.example.weather.domain.location.repository.LocationRepository;
 import com.example.weather.domain.user.repository.UserRepository;
+import com.example.weather.global.exception.BusinessException;
+import com.example.weather.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +26,38 @@ public class LocationService {
         this.locationRepository = locationRepository;
     }
 
+    // ================================
+    // 공통 조회 메서드 (중복 제거)
+    // ================================
+    private User getUserOrThrow(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Location getLocationOrThrow(User user, Long locationId) {
+        return locationRepository.findByIdAndUser(locationId, user)
+                .orElseThrow(() -> new BusinessException(ErrorCode.LOCATION_NOT_FOUND));
+    }
+
+    // ================================
+    // 변환 메서드 (중복 제거)
+    // ================================
+    private LocationResponse toLocationResponse(Location loc) {
+        return new LocationResponse(
+                loc.getId(),
+                loc.getUser().getId(),
+                loc.getName(),
+                loc.getLatitude(),
+                loc.getLongitude(),
+                loc.getCreatedAt()
+        );
+    }
+
+    // ================================
+    // CRUD 기능
+    // ================================
     public LocationResponse createLocation(Long userId, LocationCreateRequest request) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = getUserOrThrow(userId);
 
         Location location = new Location(
                 user,
@@ -35,59 +66,29 @@ public class LocationService {
                 request.getLongitude()
         );
 
-        Location saved = locationRepository.save(location);
-
-        return new LocationResponse(
-                saved.getId(),
-                user.getId(),
-                saved.getName(),
-                saved.getLatitude(),
-                saved.getLongitude(),
-                saved.getCreatedAt()
-        );
+        return toLocationResponse(locationRepository.save(location));
     }
 
     @Transactional(readOnly = true)
     public List<LocationResponse> getLocations(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = getUserOrThrow(userId);
 
         return locationRepository.findByUser(user).stream()
-                .map(loc -> new LocationResponse(
-                        loc.getId(),
-                        user.getId(),
-                        loc.getName(),
-                        loc.getLatitude(),
-                        loc.getLongitude(),
-                        loc.getCreatedAt()
-                ))
+                .map(this::toLocationResponse)
                 .toList();
     }
 
     @Transactional(readOnly = true)
     public LocationResponse getLocation(Long userId, Long locationId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = getUserOrThrow(userId);
+        Location loc = getLocationOrThrow(user, locationId);
 
-        Location loc = locationRepository.findByIdAndUser(locationId, user)
-                .orElseThrow(() -> new IllegalArgumentException("Location not found"));
-
-        return new LocationResponse(
-                loc.getId(),
-                user.getId(),
-                loc.getName(),
-                loc.getLatitude(),
-                loc.getLongitude(),
-                loc.getCreatedAt()
-        );
+        return toLocationResponse(loc);
     }
 
     public void deleteLocation(Long userId, Long locationId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        Location loc = locationRepository.findByIdAndUser(locationId, user)
-                .orElseThrow(() -> new IllegalArgumentException("Location not found"));
+        User user = getUserOrThrow(userId);
+        Location loc = getLocationOrThrow(user, locationId);
 
         locationRepository.delete(loc);
     }
