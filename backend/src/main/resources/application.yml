@@ -1,10 +1,13 @@
 spring:
+  application:
+    name: backend
   config:
     import: optional:application-secrets.yml
   # 1. 데이터소스(DB) 연결 설정
   datasource:
     url: jdbc:mysql://localhost:3306/Backend_team3?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: Backend_team3
+    password: Backend_team3
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # 2. JPA/Hibernate 설정
@@ -22,3 +25,7 @@ spring:
       disable-swagger-default-url: true
     api-docs:
       path: /v3/api-docs
+
+openweather:
+  api:
+    key: ${OPENWEATHER_API_KEY}

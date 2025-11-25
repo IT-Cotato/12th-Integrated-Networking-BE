@@ -22,5 +22,4 @@ logs/
 /target/
 /bin/
 
-application-secrets.properties
 application-secrets.yml

@@ -6,10 +6,10 @@ import com.team3.backend.domain.application.WeeklyWeatherService;
 import com.team3.backend.domain.dto.response.ApiResponse;
 import com.team3.backend.domain.dto.response.HourlyWeatherResponse;
 import com.team3.backend.domain.dto.response.WeatherResponse;
+import com.team3.backend.domain.dto.response.WeeklyWeatherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.team3.backend.domain.dto.response.WeeklyWeatherResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,11 +30,9 @@ public class WeatherController {
 
     @Operation(summary = "현재 날씨 및 대기질 조회", description = "특정 locationId에 저장된 장소의 현재 날씨와 대기질 정보를 조회합니다.")
     @GetMapping("/current")
-    public WeatherResponse getWeather(
-            @Parameter(description = "조회할 장소의 ID", example = "1")
+    public ApiResponse<WeatherResponse> getWeather(
+                @Parameter(description = "조회할 장소의 ID", example = "1")
             @RequestParam Long locationId) {
-    public ApiResponse<WeatherResponse> getWeather(@RequestParam Long locationId) {
-
         WeatherResponse response = weatherService.getWeather(locationId);
 
         return ApiResponse.<WeatherResponse>builder()
@@ -45,8 +43,11 @@ public class WeatherController {
                 .build();
     }
 
+    @Operation(summary = "시간별 날씨 조회", description = "특정 장소의 시간별 날씨 예보 목록을 반환합니다.")
     @GetMapping("/hourly")
-    public ApiResponse<List<HourlyWeatherResponse>> getHourlyWeather(@RequestParam Long locationId) {
+    public ApiResponse<List<HourlyWeatherResponse>> getHourlyWeather(
+            @Parameter(description = "날씨 정보를 조회할 장소의 ID", example = "1")
+            @RequestParam Long locationId) {
 
         List<HourlyWeatherResponse> list = hourlyWeatherService.getHourlyWeather(locationId);
 
@@ -58,8 +59,11 @@ public class WeatherController {
                 .build();
     }
 
+    @Operation(summary = "주간별 날씨 조회", description = "특정 장소의 주간 날씨 예보 목록을 반환합니다.")
     @GetMapping("/weekly")
-    public ApiResponse<List<WeeklyWeatherResponse>> getWeeklyWeather(@RequestParam Long locationId) {
+    public ApiResponse<List<WeeklyWeatherResponse>> getWeeklyWeather(
+            @Parameter(description = "날씨 정보를 조회할 장소의 ID", example = "3")
+            @RequestParam Long locationId) {
 
         List<WeeklyWeatherResponse> list = weeklyWeatherService.getWeeklyWeather(locationId);
 
