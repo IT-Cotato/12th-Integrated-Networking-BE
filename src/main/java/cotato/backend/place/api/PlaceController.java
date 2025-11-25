@@ -28,4 +28,11 @@ public class PlaceController {
         PlaceListResponse response = placeService.findAllPlaces();
         return ResponseEntity.ok(response);
     }
+
+    // DELETE /locations/{locationID} 저장된 장소 삭제
+    @DeleteMapping("/{locationId}")
+    public ResponseEntity<Void> deletePlace(@PathVariable Long locationId) {
+        placeService.deletePlace(locationId);
+        return ResponseEntity.noContent().build();
+    }
 }

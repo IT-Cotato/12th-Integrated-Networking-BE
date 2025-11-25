@@ -29,7 +29,8 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다.", "MEMBER_001"),
 
     // Location
-    LOCATION_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 저장된 장소입니다.", "LOCATION-001")
+    LOCATION_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 저장된 장소입니다.", "LOCATION-001"),
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 장소입니다.", "LOCARION-002")
 
     ;
 
