@@ -22,6 +22,21 @@ public class PlaceService {
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
 
+    // SecurityContext에서 memberId 추출
+    private Long getCurrentMemberId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication.getName() == null) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
+
+        try {
+            return Long.valueOf(authentication.getName());
+        } catch (NumberFormatException e) {
+            throw new AppException(ErrorCode.INVALID_TOKEN);
+        }
+    }
+
     // memberId 조회, 없으면 예외 발생
     private Member getMemberOrThrow(Long memberId) {
         return memberRepository.findById(memberId)
@@ -30,18 +45,7 @@ public class PlaceService {
 
     // /locations 위치 저장
     public PlaceResponse createPlace(PlaceCreateRequest request) {
-        // 1. 인증 정보 읽기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication.getName() == null) {
-            throw new AppException(ErrorCode.INVALID_TOKEN);
-        }
-
-        Long memberId;
-        try {
-            memberId = Long.valueOf(authentication.getName());
-        } catch (NumberFormatException e) {
-            throw new AppException(ErrorCode.INVALID_TOKEN);
-        }
+        Long memberId = getCurrentMemberId();
 
         // // 2. memberId로 member 조회
         Member member = getMemberOrThrow(memberId);
@@ -65,4 +69,6 @@ public class PlaceService {
 
         return new PlaceResponse(savedPlace);
     }
+
+
 }
