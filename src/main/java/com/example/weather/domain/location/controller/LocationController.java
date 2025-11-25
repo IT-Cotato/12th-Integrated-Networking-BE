@@ -3,12 +3,15 @@ package com.example.weather.domain.location.controller;
 import com.example.weather.domain.location.dto.LocationCreateRequest;
 import com.example.weather.domain.location.dto.LocationResponse;
 import com.example.weather.domain.location.service.LocationService;
-import org.springframework.http.ResponseEntity;
+import com.example.weather.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
+@Tag(name = "Location", description = "위치 관리 API")
 @RestController
 @RequestMapping("/api/users/{userId}/locations")
 public class LocationController {
@@ -19,42 +22,56 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    // 위치 등록 / 추가하기
+    @Operation(
+            summary = "위치 등록",
+            description = "사용자의 위치를 등록합니다."
+    )
     @PostMapping
-    public ResponseEntity<LocationResponse> createLocation(
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse<LocationResponse> createLocation(
             @PathVariable Long userId,
             @RequestBody LocationCreateRequest request
     ) {
         LocationResponse response = locationService.createLocation(userId, request);
-        return ResponseEntity
-                .created(URI.create("/api/users/" + userId + "/locations/" + response.getId()))
-                .body(response);
+        return ApiResponse.success(response);
     }
 
-    // 위치 목록 조회하기
+    @Operation(
+            summary = "위치 목록 조회",
+            description = "사용자의 모든 위치 목록을 조회합니다."
+    )
     @GetMapping
-    public ResponseEntity<List<LocationResponse>> getLocations(
+    public ApiResponse<List<LocationResponse>> getLocations(
             @PathVariable Long userId
     ) {
-        return ResponseEntity.ok(locationService.getLocations(userId));
+        List<LocationResponse> locations = locationService.getLocations(userId);
+        return ApiResponse.success(locations);
     }
 
-    // 위치 조회 (단건)
+    @Operation(
+            summary = "위치 단건 조회",
+            description = "사용자의 특정 위치를 조회합니다."
+    )
     @GetMapping("/{locationId}")
-    public ResponseEntity<LocationResponse> getLocation(
+    public ApiResponse<LocationResponse> getLocation(
             @PathVariable Long userId,
             @PathVariable Long locationId
     ) {
-        return ResponseEntity.ok(locationService.getLocation(userId, locationId));
+        LocationResponse location = locationService.getLocation(userId, locationId);
+        return ApiResponse.success(location);
     }
 
-    // 위치 삭제하기
+    @Operation(
+            summary = "위치 삭제",
+            description = "사용자의 특정 위치를 삭제합니다."
+    )
     @DeleteMapping("/{locationId}")
-    public ResponseEntity<Void> deleteLocation(
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ApiResponse<Void> deleteLocation(
             @PathVariable Long userId,
             @PathVariable Long locationId
     ) {
         locationService.deleteLocation(userId, locationId);
-        return ResponseEntity.noContent().build();
+        return ApiResponse.success();
     }
 }
