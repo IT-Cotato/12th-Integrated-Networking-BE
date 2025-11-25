@@ -21,4 +21,11 @@ public class PlaceController {
         PlaceResponse response = placeService.createPlace(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    // GET /locations 저장된 장소 목록 조회
+    @GetMapping
+    public ResponseEntity<PlaceListResponse> findAllPlaces() {
+        PlaceListResponse response = placeService.findAllPlaces();
+        return ResponseEntity.ok(response);
+    }
 }

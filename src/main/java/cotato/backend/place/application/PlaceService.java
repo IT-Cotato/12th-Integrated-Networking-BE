@@ -6,6 +6,7 @@ import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.member.domain.Member;
 import cotato.backend.member.domain.MemberRepository;
 import cotato.backend.place.application.dto.PlaceCreateRequest;
+import cotato.backend.place.application.dto.PlaceListResponse;
 import cotato.backend.place.application.dto.PlaceResponse;
 import cotato.backend.place.domain.Place;
 import cotato.backend.place.infra.repository.PlaceRepository;
@@ -14,6 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,9 +49,10 @@ public class PlaceService {
 
     // /locations 위치 저장
     public PlaceResponse createPlace(PlaceCreateRequest request) {
+        // 1. memberId 추출
         Long memberId = getCurrentMemberId();
 
-        // // 2. memberId로 member 조회
+        // 2. memberId로 member 조회
         Member member = getMemberOrThrow(memberId);
 
         // 3. 같은 장소 이름 존재 여부 확인
@@ -70,5 +75,23 @@ public class PlaceService {
         return new PlaceResponse(savedPlace);
     }
 
+    // GET /locations 저장된 장소 목록 조회
+    @Transactional(readOnly = true)
+    public PlaceListResponse findAllPlaces() {
+        // 1. memberId 추출
+        Long memberId = getCurrentMemberId();
+        // 2. member 조회
+        Member member = getMemberOrThrow(memberId);
+
+        // 3. 해당 사용자의 장소 목록 조회
+        List<Place> places = placeRepository.findAllByMember(member);
+
+        // 4. Entity List를 DTO List로 변환
+        List<PlaceResponse> placeResponses = places.stream()
+                .map(PlaceResponse::new)
+                .collect(Collectors.toList());
+
+        return new PlaceListResponse(placeResponses);
+    }
 
 }
