@@ -29,6 +29,13 @@ public class PlaceController {
         return ResponseEntity.ok(response);
     }
 
+    // GET /locations/{locationId} 단일 장소 조회
+    @GetMapping("/{locationId}")
+    public ResponseEntity<PlaceResponse> findPlace(@PathVariable Long locationId) {
+        PlaceResponse response = placeService.findPlace(locationId);
+        return ResponseEntity.ok(response);
+    }
+
     // DELETE /locations/{locationID} 저장된 장소 삭제
     @DeleteMapping("/{locationId}")
     public ResponseEntity<Void> deletePlace(@PathVariable Long locationId) {

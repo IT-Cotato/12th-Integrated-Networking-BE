@@ -91,6 +91,22 @@ public class PlaceService {
         return new PlaceListResponse(placeResponses);
     }
 
+    // /locations 단일 장소 조회
+    @Transactional(readOnly = true)
+    public PlaceResponse findPlace(Long placeId) {
+        // 1. memberId 추출
+        Long memberId = getCurrentMemberId();
+        // 2. 장소 존재 여부 확인
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.LOCATION_NOT_FOUND));
+        // 3. 소유권 확인
+        if (!place.getMember().getId().equals(memberId)) {
+            throw new AccessDeniedException(ErrorCode.FORBIDDEN.getMessage());
+        }
+        // 4. Place 엔티티를 응답 DTO로 변환하여 반환
+        return new PlaceResponse(place);
+    }
+
     // /locations/{locationId} 저장된 장소 삭제
     public void deletePlace(Long placeId) {
         // 1. memberId 추출
