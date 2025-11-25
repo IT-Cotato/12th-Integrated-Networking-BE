@@ -87,4 +87,5 @@ public class LocationService {
 
         return new LocationIdResponse(location.getId());
     }
+
 }
