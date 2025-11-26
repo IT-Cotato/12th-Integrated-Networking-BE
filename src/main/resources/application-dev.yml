@@ -20,6 +20,21 @@ jwt:
   access-token-validity-in-seconds: 3600 #1시간
   refresh-token-validity-in-seconds: 1209600 #14일
 
+weather:
+  api:
+    base-url: ${WEATHER_API_BASE_URL}
+    api-key: ${WEATHER_API_KEY}
+    units: metric
+    lang: kr
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+        loggerLevel: FULL
+
 logging:
   level:
     cotato.backend: DEBUG
