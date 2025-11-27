@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WeatherViewMapper {
 
-	private static final int HOURLY_HOURS = 12;
+	private static final int HOURLY_HOURS = 24;
 	private static final int DAILY_DAYS = 5;
 
 	private static final DateTimeFormatter HOUR_LABEL_FORMAT =
