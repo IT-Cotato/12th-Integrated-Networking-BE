@@ -1,7 +1,9 @@
 package com.cotato.networking.weather.domain.weather.service;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -178,7 +180,18 @@ public class WeatherService {
             throw new GeneralException(ErrorStatus.EXTERNAL_API_NO_RESPONSE);
         }
 
+        WeatherOneCallResDto.Current current = response.getCurrent();
+        current.setSunriseKst(convertUnixToKoreanTime(current.getSunrise()));
+        current.setSunsetKst(convertUnixToKoreanTime(current.getSunset()));
+
         return response;
     }
+
+    private static String convertUnixToKoreanTime(long timestamp) {
+        return Instant.ofEpochSecond(timestamp)
+            .atZone(ZoneId.of("Asia/Seoul"))
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
+
 
 }

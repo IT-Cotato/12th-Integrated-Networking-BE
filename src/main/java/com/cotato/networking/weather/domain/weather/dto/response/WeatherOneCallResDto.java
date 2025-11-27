@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @NoArgsConstructor
@@ -17,6 +18,7 @@ public class WeatherOneCallResDto {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @Setter
     public static class Current {
         private double temp;
         private double feels_like;
@@ -27,6 +29,9 @@ public class WeatherOneCallResDto {
         private List<Weather> weather;
         private long sunrise;
         private long sunset;
+
+        private String sunriseKst;
+        private String sunsetKst;
     }
 
     @Data
@@ -49,7 +54,6 @@ public class WeatherOneCallResDto {
         private double wind_speed;
         private int wind_deg;
         private double uvi;
-        private long sunrise;
         private List<Weather> weather;
     }
 }

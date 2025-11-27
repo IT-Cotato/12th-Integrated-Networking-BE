@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cotato.networking.weather.domain.weather.converter.WeatherConverter;
 import com.cotato.networking.weather.domain.weather.dto.response.AirPollutionResDto;
 import com.cotato.networking.weather.domain.weather.dto.response.DailyWeatherSummaryDto;
 import com.cotato.networking.weather.domain.weather.dto.response.WeatherOneCallResDto;
-import com.cotato.networking.weather.domain.weather.dto.response.WeatherResDto;
 import com.cotato.networking.weather.domain.weather.service.WeatherService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -61,11 +59,10 @@ public class WeatherController {
     @GetMapping("/onecall")
     @CrossOrigin(origins = "*")
     @Operation(summary = "현재 날씨 조회", description = "OpenWeather의 onecall API를 통해 현재 날씨, 시간별 예보 등을 제공합니다.")
-    public WeatherResDto getCurrentWeather(
+    public WeatherOneCallResDto getCurrentWeather(
             @RequestParam double lat,
             @RequestParam double lon
     ) {
-        WeatherOneCallResDto response = weatherService.getCurrentWeather(lat, lon);
-        return WeatherConverter.toDto(response.getCurrent());
+        return weatherService.getCurrentWeather(lat, lon);
     }
 }
