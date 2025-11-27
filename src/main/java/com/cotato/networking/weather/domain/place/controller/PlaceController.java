@@ -27,6 +27,26 @@ public class PlaceController {
         return ApiResponse.onSuccess(response);
     }
 
+    // 장소 즐겨찾기 토글
+    @PostMapping("/{placeId}/pin")
+    public ApiResponse<PlaceResponseDto> togglePin(
+            @SessionAttribute(AuthInterceptor.SESSION_USER_ID) Long userId,
+            @PathVariable Long placeId) {
+
+        PlaceResponseDto response = placeService.setPin(userId, placeId);
+        return ApiResponse.onSuccess(response);
+    }
+
+    // 즐겨찾기 해제
+    @DeleteMapping("/{placeId}/pin")
+    public ApiResponse<PlaceResponseDto> unsetPin(
+            @SessionAttribute(AuthInterceptor.SESSION_USER_ID) Long userId,
+            @PathVariable Long placeId) {
+
+        return ApiResponse.onSuccess(placeService.unsetPin(userId, placeId));
+    }
+
+
     // 장소 목록 조회
     @GetMapping
     public ApiResponse<List<PlaceResponseDto>> getPlaces(

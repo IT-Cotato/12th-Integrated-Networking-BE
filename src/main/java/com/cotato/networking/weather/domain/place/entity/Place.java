@@ -36,5 +36,9 @@ public class Place extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	public void setPinned(boolean pinned) {
+		this.isPinned = pinned;
+	}
 }
 

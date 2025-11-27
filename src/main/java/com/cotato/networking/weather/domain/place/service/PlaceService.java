@@ -59,4 +59,41 @@ public class PlaceService {
 
         placeRepository.delete(place);
     }
+
+    public PlaceResponseDto setPin(Long userId, Long placeId) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new RuntimeException("해당 장소가 존재하지 않습니다."));
+
+        if (!place.getUser().getId().equals(userId)) {
+            throw new RuntimeException("본인의 장소만 즐겨찾기 설정할 수 있습니다.");
+        }
+
+        // 이미 설정된 상태라면 그대로 반환해도 됨
+        if (place.isPinned()) {
+            return placeConverter.toDto(place);
+        }
+
+        place.setPinned(true);
+        placeRepository.save(place);
+
+        return placeConverter.toDto(place);
+    }
+
+    public PlaceResponseDto unsetPin(Long userId, Long placeId) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new RuntimeException("해당 장소가 존재하지 않습니다."));
+
+        if (!place.getUser().getId().equals(userId)) {
+            throw new RuntimeException("본인의 장소만 즐겨찾기 해제할 수 있습니다.");
+        }
+
+        if (!place.isPinned()) {
+            return placeConverter.toDto(place);
+        }
+
+        place.setPinned(false);
+        placeRepository.save(place);
+
+        return placeConverter.toDto(place);
+    }
 }
