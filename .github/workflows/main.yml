@@ -4,7 +4,7 @@ name: CI/CD Pipeline for Spring Backend
 on:
   push:
     branches:
-      - feat/deploy
+      - develop
 
 jobs:
   build-and-deploy:
