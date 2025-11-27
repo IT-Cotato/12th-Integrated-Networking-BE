@@ -30,6 +30,7 @@ public class AuthController {
      */
     @PostMapping("/signup")
     public ApiResponse<AuthResponseDto> signup(@RequestBody AuthSignUpRequestDto requestDto) {
+
         User newUser = authService.signUp(requestDto);
         AuthResponseDto responseDto = authConverter.toDto(newUser);
 
@@ -40,14 +41,17 @@ public class AuthController {
      * 로그인 API
      */
     @PostMapping("/login")
-    public ApiResponse<String> login(@RequestBody AuthLoginRequestDto requestDto, HttpServletRequest request) {
+    public ApiResponse<AuthResponseDto> login(@RequestBody AuthLoginRequestDto requestDto, HttpServletRequest request) {
         User user = authService.authenticate(requestDto);
 
         // 세션 생성 및 ID 저장
         HttpSession session = request.getSession();
         session.setAttribute(AuthInterceptor.SESSION_USER_ID, user.getId());
 
-        return ApiResponse.onSuccess("로그인 성공");
+        // 로그인 한 유저 정보 반환
+        AuthResponseDto responseDto = authConverter.toDto(user);
+
+        return ApiResponse.onSuccess(responseDto);
     }
 
     /**
