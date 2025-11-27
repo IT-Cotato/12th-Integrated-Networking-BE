@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import cotato.backend.weather.infra.config.WeatherFeignConfig;
 import cotato.backend.weather.infra.dto.ExternalAirPollutionResponse;
 import cotato.backend.weather.infra.dto.ExternalOneCallResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @FeignClient(
 	name = "openWeatherApiClient",
 	url = "${weather.api.base-url}",

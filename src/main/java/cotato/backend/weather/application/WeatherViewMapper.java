@@ -11,7 +11,9 @@ import java.util.List;
 
 import cotato.backend.weather.infra.dto.ExternalOneCallResponse;
 import cotato.backend.weather.infra.dto.WeatherViewResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class WeatherViewMapper {
 
 	private static final int HOURLY_HOURS = 12;
@@ -32,9 +34,11 @@ public class WeatherViewMapper {
 		Double pm25
 	) {
 		WeatherViewResponse.CurrentSection current = buildCurrent(source, pm10, pm25);
+		log.info("current section: {}", current);
 		List<WeatherViewResponse.HourlySection> hourly = buildHourly(source);
+		log.info("hourly sections count: {}", hourly.size());
 		List<WeatherViewResponse.DailySection> daily = buildDaily(source);
-
+		log.info("daily sections count: {}", daily.size());
 		return WeatherViewResponse.builder()
 			.current(current)
 			.hourly(hourly)
