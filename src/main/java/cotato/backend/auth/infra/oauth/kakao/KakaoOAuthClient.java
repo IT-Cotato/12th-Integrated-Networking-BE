@@ -29,6 +29,7 @@ public class KakaoOAuthClient {
 			redirectUri
 		);
 		try {
+			System.out.println(redirectUri);
 			KakaoTokenResponse response = kakaoAuthFeignClient.requestAccessToken(
 				"authorization_code",
 				properties.getClientId(),
