@@ -1,0 +1,17 @@
+services:
+  backend:
+    image: neibler/cotato-backend:latest
+    container_name: cotato-backend
+    restart: always
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "8080:8080"
+    networks:
+      - cotato-net
+
+networks:
+  cotato-net:
+    driver: bridge
