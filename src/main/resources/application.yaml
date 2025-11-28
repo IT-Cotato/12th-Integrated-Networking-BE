@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: backend
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+openWeather:
+  api:
+    key: ${OPENWEATHER_API_KEY}
+
+weatherApi:
+  api:
+    key: ${WEATHER_API_KEY}
