@@ -1,0 +1,50 @@
+name: CI/CD Pipeline for Spring Backend
+
+# develop 브랜치에 푸시될 때 워크플로우 실행
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 소스 코드 체크아웃
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      # 2. 도커 빌드 환경 설정 및 로그인
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
+      # 3. 도커 이미지 빌드 및 푸시
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/spring-backend-app:latest
+
+      # 4. EC2에 SSH 접속하여 배포 스크립트 실행
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # deploy.sh 스크립트가 있는 홈 디렉토리로 이동
+            cd /home/${{ secrets.EC2_USERNAME }}
+            
+            # 스크립트 실행 (최신 이미지를 pull하고 컨테이너 재시작)
+            ./deploy.sh
